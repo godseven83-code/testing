@@ -809,6 +809,9 @@ function loadShopProducts() {
 function init() {
   console.log('Initializing application...');
   
+  // Mobile browser compatibility fixes
+  setupMobileBrowserFixes();
+  
   // Check EmailJS availability
   setTimeout(() => {
     if (typeof emailjs !== 'undefined') {
@@ -843,6 +846,103 @@ function init() {
   loadShopFilters();
   loadShopProducts();
   updateCartUI();
+}
+
+// Mobile browser compatibility fixes
+function setupMobileBrowserFixes() {
+  // Fix viewport height on mobile browsers (address bar issue)
+  function setViewportHeight() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+  
+  // Initial viewport height
+  setViewportHeight();
+  
+  // Update on resize/orientation change
+  window.addEventListener('resize', setViewportHeight);
+  window.addEventListener('orientationchange', () => {
+    setTimeout(setViewportHeight, 100);
+  });
+  
+  // Prevent iOS Safari from zooming on input focus
+  function preventIOSZoom() {
+    if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+      const viewport = document.querySelector('meta[name="viewport"]');
+      if (viewport) {
+        let viewportContent = viewport.getAttribute('content');
+        
+        // Disable zoom on input focus
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+          input.addEventListener('focus', () => {
+            viewport.setAttribute('content', viewportContent + ', user-scalable=no');
+          });
+          
+          input.addEventListener('blur', () => {
+            viewport.setAttribute('content', viewportContent);
+          });
+        });
+      }
+    }
+  }
+  
+  // Apply iOS fixes
+  preventIOSZoom();
+  
+  // Better touch handling for mobile browsers
+  function improveTouchHandling() {
+    // Prevent double-tap zoom on buttons
+    const buttons = document.querySelectorAll('button, .btn, .nav-link');
+    buttons.forEach(button => {
+      button.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        this.click();
+      });
+    });
+  }
+  
+  // Apply after DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', improveTouchHandling);
+  } else {
+    improveTouchHandling();
+  }
+  
+  // Fix for Android Chrome viewport issues
+  if (navigator.userAgent.toLowerCase().indexOf('android') > -1) {
+    window.addEventListener('resize', () => {
+      if (window.screen.height > window.innerHeight) {
+        document.body.classList.add('keyboard-open');
+      } else {
+        document.body.classList.remove('keyboard-open');
+      }
+    });
+  }
+  
+  // Enhanced mobile menu handling
+  function enhanceMobileMenu() {
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    
+    if (mobileMenuBtn && mobileNav) {
+      // Prevent menu from staying open when rotating device
+      window.addEventListener('orientationchange', () => {
+        mobileNav.classList.remove('active');
+      });
+      
+      // Close menu when clicking outside
+      document.addEventListener('touchstart', (e) => {
+        if (mobileNav.classList.contains('active')) {
+          if (!mobileNav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+            mobileNav.classList.remove('active');
+          }
+        }
+      });
+    }
+  }
+  
+  enhanceMobileMenu();
 }
 
 // Event Handler Functions
