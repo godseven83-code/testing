@@ -28,6 +28,9 @@
     --color-slate-900-rgb: 19, 52, 59;
     --color-slate-500-rgb: 98, 108, 113;
     --color-red-500-rgb: 192, 21, 47;
+    /* Dynamic viewport height for mobile browsers */
+    --vh: 1vh;
+    --full-height: calc(100 * var(--vh));
     --color-red-400-rgb: 255, 84, 89;
     --color-orange-500-rgb: 168, 75, 47;
     --color-orange-400-rgb: 230, 129, 97;
@@ -107,7 +110,56 @@
 }
 
 
-/* Base styles */
+/* Enhanced CSS Reset for Cross-Browser Compatibility */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    /* Enhanced touch handling */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+/* Allow text selection for content elements */
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+div.product-description,
+div.hero-description {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+
+/* Form elements should allow selection */
+
+input,
+textarea,
+select {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+
+/* Base styles with enhanced cross-browser compatibility */
 
 html {
     font-size: var(--font-size-base);
@@ -116,7 +168,16 @@ html {
     color: var(--color-text);
     background-color: var(--color-background);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     box-sizing: border-box;
+    /* Prevent horizontal scrolling */
+    overflow-x: hidden;
+    /* Better text rendering */
+    text-rendering: optimizeLegibility;
+    /* Consistent font sizing across browsers */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 body {
@@ -124,12 +185,24 @@ body {
     padding: 0;
     background: linear-gradient(135deg, var(--cyber-black) 0%, var(--cyber-dark-gray) 100%);
     min-height: 100vh;
+    /* Prevent bounce scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    /* Prevent horizontal scrolling */
+    overflow-x: hidden;
+    /* Better font rendering */
+    font-feature-settings: "kern" 1;
+    -webkit-font-feature-settings: "kern" 1;
+    -moz-font-feature-settings: "kern" 1;
 }
 
 *,
 *::before,
 *::after {
     box-sizing: inherit;
+    /* Better touch handling */
+    -webkit-tap-highlight-color: transparent;
+    /* Disable text selection on interactive elements */
+    -webkit-touch-callout: none;
 }
 
 
@@ -189,13 +262,52 @@ a:hover {
 }
 
 
-/* Utility classes */
+/* Container with enhanced responsiveness */
 
 .container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--space-16);
+    /* Prevent overflow */
+    box-sizing: border-box;
+    /* Better mobile handling */
+    position: relative;
+}
+
+
+/* Responsive container adjustments */
+
+@media screen and (max-width: 1440px) {
+    .container {
+        max-width: 1200px;
+        padding: 0 var(--space-20);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .container {
+        max-width: 100%;
+        padding: 0 var(--space-20);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 0 var(--space-16);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 0 var(--space-12);
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .container {
+        padding: 0 var(--space-8);
+    }
 }
 
 .text-accent {
@@ -218,7 +330,7 @@ a:hover {
 }
 
 
-/* Header */
+/* Header with enhanced mobile compatibility */
 
 .header {
     background: rgba(0, 0, 0, 0.95);
@@ -229,6 +341,13 @@ a:hover {
     right: 0;
     z-index: 1000;
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* Ensure consistent width */
+    width: 100%;
+    /* Better mobile performance */
+    will-change: transform;
+    /* Prevent layout shifts */
+    contain: layout style paint;
 }
 
 .header-content {
@@ -236,11 +355,16 @@ a:hover {
     align-items: center;
     justify-content: space-between;
     padding: var(--space-16) 0;
+    /* Prevent content overflow */
+    min-height: 60px;
+    position: relative;
 }
 
 .logo {
     display: flex;
     flex-direction: column;
+    /* Prevent shrinking */
+    flex-shrink: 0;
 }
 
 .logo-text {
@@ -248,6 +372,8 @@ a:hover {
     font-size: var(--font-size-xl);
     font-weight: var(--font-weight-bold);
     color: var(--color-text);
+    /* Better text rendering */
+    text-rendering: optimizeLegibility;
 }
 
 .logo-accent {
@@ -266,6 +392,8 @@ a:hover {
 .nav {
     display: flex;
     gap: var(--space-32);
+    /* Hide on mobile by default */
+    flex-shrink: 0;
 }
 
 .nav-link {
@@ -278,6 +406,12 @@ a:hover {
     border: 1px solid transparent;
     border-radius: var(--radius-base);
     transition: all var(--duration-normal) var(--ease-standard);
+    text-decoration: none;
+    /* Better touch targets */
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav-link:hover,
@@ -292,6 +426,8 @@ a:hover {
     display: flex;
     align-items: center;
     gap: var(--space-16);
+    /* Prevent shrinking */
+    flex-shrink: 0;
 }
 
 .search-container {
@@ -643,12 +779,22 @@ a:hover {
 
 /* Mobile form optimizations */
 
-@media (max-width: 768px) {
+
+/* Mobile form optimizations */
+
+@media screen and (max-width: 768px) {
     .form-control {
         padding: var(--space-16);
-        font-size: 16px;
-        /* Prevents zoom on iOS */
+        font-size: 16px !important;
+        /* Critical: Prevents zoom on iOS */
         min-height: 48px;
+        /* Enhanced mobile input styling */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: var(--radius-base);
+        /* Better touch handling */
+        touch-action: manipulation;
     }
     .form-label {
         font-size: var(--font-size-base);
@@ -657,16 +803,52 @@ a:hover {
     .form-group {
         margin-bottom: var(--space-24);
     }
+    /* Specific fixes for input types */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    input[type="number"],
+    textarea,
+    select {
+        font-size: 16px !important;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: var(--radius-base);
+    }
+    /* iOS Safari specific fixes */
+    input[type="search"] {
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: var(--radius-base);
+        font-size: 16px !important;
+    }
+    /* Select dropdown fix */
+    select {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23ffffff" d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 12px;
+        padding-right: 36px;
+    }
 }
 
-@media (max-width: 480px) {
+@media screen and (max-width: 480px) {
     .form-control {
         padding: var(--space-12) var(--space-16);
         border-radius: var(--radius-sm);
+        font-size: 16px !important;
     }
     .form-row {
         grid-template-columns: 1fr;
         gap: var(--space-12);
+    }
+    /* Better button sizing on small screens */
+    .btn {
+        min-height: 48px;
+        font-size: 16px !important;
+        padding: var(--space-12) var(--space-20);
     }
 }
 
@@ -2013,187 +2195,4 @@ a:hover {
     background: var(--color-primary);
     color: white;
     border: 1px solid var(--color-primary);
-}
-
-.notification--warning {
-    background: #ffa500;
-    color: var(--cyber-black);
-    border: 1px solid #ffa500;
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-
-/* Form validation styles */
-
-.form-control--error {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
-}
-
-.form-error-message {
-    color: var(--color-primary);
-    font-size: var(--font-size-sm);
-    margin-top: var(--space-4);
-    display: block;
-}
-
-.form-control--success {
-    border-color: var(--cyber-green);
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-}
-
-
-/* Mobile optimizations */
-
-@media (max-width: 768px) {
-    .trust-badges {
-        gap: var(--space-12);
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 0 var(--space-16);
-    }
-    .trust-badge {
-        padding: var(--space-8) var(--space-12);
-        font-size: var(--font-size-xs);
-        min-height: 44px;
-        flex: 1;
-        min-width: 120px;
-        max-width: 150px;
-    }
-    .notification {
-        right: 10px;
-        left: 10px;
-        max-width: none;
-        margin: 0 var(--space-8);
-    }
-    .testimonials-grid {
-        gap: var(--space-16);
-    }
-    .testimonial-card {
-        padding: var(--space-16);
-    }
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: var(--space-24);
-        text-align: center;
-    }
-    .footer-section {
-        padding: var(--space-16) 0;
-        border-bottom: 1px solid var(--color-border);
-    }
-    .footer-section:last-child {
-        border-bottom: none;
-    }
-    .social-links {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .trust-badges {
-        gap: var(--space-8);
-        padding: 0 var(--space-8);
-    }
-    .trust-badge {
-        padding: var(--space-6) var(--space-8);
-        font-size: 10px;
-        min-height: 40px;
-        min-width: 100px;
-        max-width: 120px;
-    }
-    .trust-badge-icon {
-        font-size: var(--font-size-sm);
-    }
-    .testimonial-card {
-        padding: var(--space-12);
-    }
-    .testimonial-card::before {
-        font-size: 2rem;
-        top: var(--space-4);
-        left: var(--space-12);
-    }
-    .testimonial-text {
-        padding-left: var(--space-16);
-        font-size: var(--font-size-sm);
-    }
-}
-
-
-/* Additional mobile touch optimizations */
-
-@media (max-width: 768px) {
-    /* Ensure all clickable elements have proper touch targets */
-    .view-product-btn,
-    .add-to-cart-btn,
-    .quantity-btn,
-    .search-btn,
-    .cart-close {
-        min-height: 44px;
-        min-width: 44px;
-        touch-action: manipulation;
-    }
-    /* Optimize cart item layout for mobile */
-    .cart-item {
-        flex-direction: column;
-        gap: var(--space-8);
-        padding: var(--space-12);
-    }
-    .cart-item-image {
-        align-self: center;
-        width: 80px;
-        height: 80px;
-    }
-    .cart-item-details {
-        text-align: center;
-    }
-    .quantity-controls {
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: var(--space-8);
-    }
-    /* Mobile-optimized product actions */
-    .product-actions {
-        gap: var(--space-8);
-        flex-direction: column;
-    }
-    .product-actions .btn {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
-
-/* Accessibility improvements for mobile */
-
-@media (max-width: 768px) {
-    /* Better focus indicators on mobile */
-    .btn:focus,
-    .form-control:focus,
-    .nav-link:focus {
-        outline: 2px solid var(--color-primary);
-        outline-offset: 2px;
-    }
-    /* Improved text readability */
-    body {
-        -webkit-text-size-adjust: 100%;
-        text-size-adjust: 100%;
-    }
-    /* Smooth scrolling for mobile */
-    html {
-        scroll-behavior: smooth;
-    }
-    /* Prevent horizontal scroll */
-    body {
-        overflow-x: hidden;
-    }
 }
