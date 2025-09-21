@@ -812,6 +812,19 @@ function init() {
   // Mobile browser compatibility fixes
   setupMobileBrowserFixes();
   
+  // Add error handling for mobile debugging
+  window.addEventListener('error', function(e) {
+    console.error('JavaScript error:', e.error);
+    console.error('Error message:', e.message);
+    console.error('File:', e.filename);
+    console.error('Line:', e.lineno);
+  });
+  
+  // Add unhandled promise rejection handling
+  window.addEventListener('unhandledrejection', function(e) {
+    console.error('Unhandled promise rejection:', e.reason);
+  });
+  
   // Check EmailJS availability
   setTimeout(() => {
     if (typeof emailjs !== 'undefined') {
@@ -850,6 +863,26 @@ function init() {
 
 // Mobile browser compatibility fixes
 function setupMobileBrowserFixes() {
+  // Add mobile debugging
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  console.log('Mobile device detected:', isMobile);
+  console.log('User agent:', navigator.userAgent);
+  console.log('Screen dimensions:', window.screen.width, 'x', window.screen.height);
+  console.log('Viewport dimensions:', window.innerWidth, 'x', window.innerHeight);
+  
+  // Add mobile debug indicator to page
+  if (isMobile) {
+    const debugDiv = document.createElement('div');
+    debugDiv.className = 'debug-mobile';
+    debugDiv.textContent = `Mobile: ${window.innerWidth}x${window.innerHeight}`;
+    document.body.appendChild(debugDiv);
+    
+    // Update debug info on resize
+    window.addEventListener('resize', () => {
+      debugDiv.textContent = `Mobile: ${window.innerWidth}x${window.innerHeight}`;
+    });
+  }
+  
   // Fix viewport height on mobile browsers (address bar issue)
   function setViewportHeight() {
     const vh = window.innerHeight * 0.01;
@@ -892,13 +925,34 @@ function setupMobileBrowserFixes() {
   
   // Better touch handling for mobile browsers
   function improveTouchHandling() {
-    // Prevent double-tap zoom on buttons
+    // Improved touch handling without interfering with normal clicks
     const buttons = document.querySelectorAll('button, .btn, .nav-link');
     buttons.forEach(button => {
+      // Add touch-friendly class
+      button.classList.add('touch-enabled');
+      
+      // Passive touch events for better performance
+      button.addEventListener('touchstart', function(e) {
+        this.classList.add('touch-active');
+      }, { passive: true });
+      
       button.addEventListener('touchend', function(e) {
-        e.preventDefault();
-        this.click();
-      });
+        this.classList.remove('touch-active');
+        // Small delay to allow normal click to process
+        setTimeout(() => {
+          if (!this.disabled) {
+            // Only trigger click if not already handled
+            if (!e.defaultPrevented) {
+              this.click();
+            }
+          }
+        }, 10);
+      }, { passive: true });
+      
+      // Reset touch state on touch cancel
+      button.addEventListener('touchcancel', function(e) {
+        this.classList.remove('touch-active');
+      }, { passive: true });
     });
   }
   
@@ -943,10 +997,33 @@ function setupMobileBrowserFixes() {
   }
   
   enhanceMobileMenu();
+  
+  // Additional mobile touch event setup
+  if (isMobile) {
+    console.log('Setting up additional mobile touch handlers');
+    
+    // Add touch event handlers for all interactive elements
+    document.querySelectorAll('[data-page], .btn, .nav-link, .view-product-btn, .add-to-cart-btn, .quantity-btn').forEach(element => {
+      element.addEventListener('touchstart', function(e) {
+        console.log('Touch start on:', this);
+        this.classList.add('touch-active');
+      }, { passive: true });
+      
+      element.addEventListener('touchend', function(e) {
+        console.log('Touch end on:', this);
+        this.classList.remove('touch-active');
+      }, { passive: true });
+      
+      element.addEventListener('touchcancel', function(e) {
+        this.classList.remove('touch-active');
+      }, { passive: true });
+    });
+  }
 }
 
 // Event Handler Functions
 function handleNavigation(e) {
+  console.log('Navigation handler called:', e.target);
   e.preventDefault();
   e.stopPropagation();
   
@@ -963,18 +1040,23 @@ function handleNavigation(e) {
   if (targetPage) {
     console.log('Navigating to:', targetPage);
     showPage(targetPage);
+  } else {
+    console.warn('No target page found for navigation');
   }
 }
 
 function handleProductActions(e) {
+  console.log('Product action handler called:', e.target);
   e.preventDefault();
   e.stopPropagation();
   
   if (e.target.classList.contains('view-product-btn')) {
     const productId = e.target.getAttribute('data-product-id');
+    console.log('Viewing product:', productId);
     showProductDetail(productId);
   } else if (e.target.classList.contains('add-to-cart-btn')) {
     const productId = e.target.getAttribute('data-product-id');
+    console.log('Adding to cart:', productId);
     addToCart(productId);
   }
 }
@@ -1045,9 +1127,73 @@ function handleFilterChange(e) {
 document.addEventListener('DOMContentLoaded', function() {
   init();
   
-  // Global click handler with proper delegation
-  document.addEventListener('click', function(e) {
-    console.log('Click detected on:', e.target);
+  // Mobile-friendly event delegation
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const eventType = isMobile ? 'touchend' : 'click';
+  
+  console.log('Setting up event listeners for:', isMobile ? 'mobile' : 'desktop');
+  
+  // Global event handler with mobile support
+  document.addEventListener(eventType, function(e) {
+    console.log('Event detected on:', e.target, 'Event type:', e.type);
+    
+    // For mobile, prevent default behavior that might interfere
+    if (isMobile && e.type === 'touchend') {
+      // Allow a small delay for touch to register properly
+      setTimeout(() => {
+        handleMobileEvent(e);
+      }, 50);
+    } else {
+      handleDesktopEvent(e);
+    }
+  }, { passive: false });
+  
+  // Add click handler as fallback for mobile
+  if (isMobile) {
+    document.addEventListener('click', function(e) {
+      console.log('Fallback click event on mobile:', e.target);
+      handleDesktopEvent(e);
+    });
+  }
+  
+  function handleMobileEvent(e) {
+    const target = e.target;
+    console.log('Handling mobile event for:', target);
+    
+    // Navigation clicks
+    if (target.hasAttribute('data-page') || 
+        target.closest('[data-page]') || 
+        target.closest('.logo')) {
+      e.preventDefault();
+      handleNavigation(e);
+      return;
+    }
+    
+    // Product action buttons
+    if (target.classList.contains('view-product-btn') || 
+        target.classList.contains('add-to-cart-btn')) {
+      e.preventDefault();
+      handleProductActions(e);
+      return;
+    }
+    
+    // Cart actions
+    if (target.classList.contains('quantity-btn')) {
+      e.preventDefault();
+      handleCartActions(e);
+      return;
+    }
+    
+    // Category cards
+    if (target.closest('.category-card')) {
+      e.preventDefault();
+      handleCategoryFilter(e);
+      return;
+    }
+  }
+  
+  function handleDesktopEvent(e) {
+    console.log('Handling desktop event for:', e.target);
     
     // Navigation clicks - check multiple conditions
     if (e.target.hasAttribute('data-page') || 
@@ -1081,35 +1227,78 @@ document.addEventListener('DOMContentLoaded', function() {
       handleFilterChange(e);
       return;
     }
-  });
+  }
   
-  // Mobile menu toggle
+  // Mobile menu toggle with better mobile support
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileNav = document.getElementById('mobile-nav');
   if (mobileMenuBtn && mobileNav) {
-    mobileMenuBtn.addEventListener('click', function(e) {
+    console.log('Setting up mobile menu');
+    
+    // Use touchend for mobile, click for desktop
+    const menuEventType = isMobile ? 'touchend' : 'click';
+    
+    mobileMenuBtn.addEventListener(menuEventType, function(e) {
+      console.log('Mobile menu button clicked/touched');
       e.stopPropagation();
+      e.preventDefault();
       mobileNav.classList.toggle('active');
-    });
+    }, { passive: false });
+    
+    // Fallback click event for mobile
+    if (isMobile) {
+      mobileMenuBtn.addEventListener('click', function(e) {
+        console.log('Mobile menu fallback click');
+        e.stopPropagation();
+        e.preventDefault();
+        mobileNav.classList.toggle('active');
+      });
+    }
+  } else {
+    console.warn('Mobile menu elements not found');
   }
   
-  // Cart sidebar functionality
+  // Cart sidebar functionality with mobile support
   const cartBtn = document.getElementById('cart-btn');
   const cartSidebar = document.getElementById('cart-sidebar');
   const cartClose = document.getElementById('cart-close');
   
   if (cartBtn && cartSidebar) {
-    cartBtn.addEventListener('click', function(e) {
+    console.log('Setting up cart sidebar');
+    
+    const cartEventType = isMobile ? 'touchend' : 'click';
+    
+    cartBtn.addEventListener(cartEventType, function(e) {
+      console.log('Cart button clicked/touched');
       e.preventDefault();
       e.stopPropagation();
       cartSidebar.classList.add('active');
-    });
+    }, { passive: false });
+    
+    // Fallback for mobile
+    if (isMobile) {
+      cartBtn.addEventListener('click', function(e) {
+        console.log('Cart fallback click');
+        e.preventDefault();
+        e.stopPropagation();
+        cartSidebar.classList.add('active');
+      });
+    }
   }
   
   if (cartClose && cartSidebar) {
-    cartClose.addEventListener('click', function() {
+    const closeEventType = isMobile ? 'touchend' : 'click';
+    
+    cartClose.addEventListener(closeEventType, function(e) {
+      console.log('Cart close clicked/touched');
       cartSidebar.classList.remove('active');
-    });
+    }, { passive: false });
+    
+    if (isMobile) {
+      cartClose.addEventListener('click', function() {
+        cartSidebar.classList.remove('active');
+      });
+    }
   }
   
   // Search functionality
@@ -1231,24 +1420,52 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
-  document.getElementById('checkout-btn').addEventListener('click', function() {
-  const modal = document.getElementById('checkout-form-modal');
-  modal.style.display = 'flex';
-  
-  // Mobile specific handling
-  if (window.innerWidth <= 768) {
-    // Prevent body scroll
-    document.body.style.overflow = 'hidden';
+  // Checkout button with mobile support
+  const checkoutBtn = document.getElementById('checkout-btn');
+  if (checkoutBtn) {
+    console.log('Setting up checkout button');
     
-    // Ensure modal is at top of viewport
-    setTimeout(() => {
-      modal.scrollTop = 0;
-    }, 100);
+    const checkoutEventType = isMobile ? 'touchend' : 'click';
     
-    // Add mobile-specific class for better styling
-    modal.classList.add('mobile-checkout');
+    checkoutBtn.addEventListener(checkoutEventType, function(e) {
+      console.log('Checkout button clicked/touched');
+      const modal = document.getElementById('checkout-form-modal');
+      modal.style.display = 'flex';
+      
+      // Mobile specific handling
+      if (window.innerWidth <= 768) {
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+        
+        // Ensure modal is at top of viewport
+        setTimeout(() => {
+          modal.scrollTop = 0;
+        }, 100);
+        
+        // Add mobile-specific class for better styling
+        modal.classList.add('mobile-checkout');
+      }
+    }, { passive: false });
+    
+    // Fallback for mobile
+    if (isMobile) {
+      checkoutBtn.addEventListener('click', function() {
+        console.log('Checkout fallback click');
+        const modal = document.getElementById('checkout-form-modal');
+        modal.style.display = 'flex';
+        
+        if (window.innerWidth <= 768) {
+          document.body.style.overflow = 'hidden';
+          setTimeout(() => {
+            modal.scrollTop = 0;
+          }, 100);
+          modal.classList.add('mobile-checkout');
+        }
+      });
+    }
+  } else {
+    console.warn('Checkout button not found');
   }
-});
 
 document.getElementById('close-checkout-form').addEventListener('click', function() {
   const modal = document.getElementById('checkout-form-modal');
