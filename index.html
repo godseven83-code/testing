@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en" data-color-scheme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+
+    <!-- Mobile-specific Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TechieCyber404">
+    <meta name="theme-color" content="#ff0000">
+    <meta name="msapplication-TileColor" content="#ff0000">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- SEO Meta Tags -->
+    <title>TechieCyber404 Hardware Store - Professional Cybersecurity Tools</title>
+    <meta name="description" content="Professional cybersecurity hardware store specializing in ESP8266 and penetration testing tools for ethical hackers and security professionals. Fast shipping, secure checkout.">
+    <meta name="keywords" content="cybersecurity, penetration testing, ESP8266, ethical hacking, security tools, hardware, keystroke injection, penetration testing tools">
+    <meta name="author" content="TechieCyber404">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="TechieCyber404 - Professional Cybersecurity Hardware">
+    <meta property="og:description" content="Premium cybersecurity tools and hardware for security professionals and ethical hackers">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://techiecyber404.com">
+    <meta property="og:image" content="https://techiecyber404.com/images/logo.png">
+    <meta property="og:site_name" content="TechieCyber404 Hardware Store">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TechieCyber404 - Professional Cybersecurity Hardware">
+    <meta name="twitter:description" content="Premium cybersecurity tools and hardware for security professionals">
+    <meta name="twitter:image" content="https://techiecyber404.com/images/logo.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- Stylesheets and Fonts -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Audiowide:wght@400&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // Initialize EmailJS with your public key
+            emailjs.init({
+                publicKey: "9yqDcWHUqGlPw4mlH"
+            });
+            console.log("EmailJS initialized successfully");
+        })();
+    </script>
+
+
+
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-text">TechieCyber<span class="logo-accent">404</span></span>
+                    <span class="logo-subtitle">Hardware Store</span>
+                </div>
+
+                <nav class="nav desktop-nav">
+                    <a href="#home" class="nav-link active" data-page="home">Home</a>
+                    <a href="#shop" class="nav-link" data-page="shop">Shop</a>
+                    <a href="#about" class="nav-link" data-page="about">About</a>
+                    <a href="#support" class="nav-link" data-page="support">Support</a>
+                </nav>
+
+                <div class="header-actions">
+                    <div class="search-container">
+                        <input type="search" class="search-input" placeholder="Search products..." id="search-input">
+                        <button class="search-btn" id="search-btn">🔍</button>
+                    </div>
+                    <button class="cart-btn" id="cart-btn">
+                        <span class="cart-icon">🛒</span>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simple mobile navigation - always visible on mobile -->
+        <nav class="simple-mobile-nav">
+            <a href="#home" class="simple-nav-link" data-page="home">Home</a>
+            <a href="#shop" class="simple-nav-link" data-page="shop">Shop</a>
+            <a href="#about" class="simple-nav-link" data-page="about">About</a>
+            <a href="#support" class="simple-nav-link" data-page="support">Support</a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <!-- Home Page -->
+        <section id="home-page" class="page active">
+            <div class="hero">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Professional <span class="text-accent">Cybersecurity</span> Hardware</h1>
+                        <p class="hero-description">Cutting-edge penetration testing tools, security devices, and hardware for cybersecurity professionals and ethical hackers.</p>
+                        <button class="btn btn--primary btn--lg" id="shop-now-btn">Explore Products</button>
+                    </div>
+                </div>
+            </div>
+
+            <section class="featured-products">
+                <div class="container">
+                    <h2 class="section-title">Available Products</h2>
+                    <div class="products-grid" id="featured-products-grid">
+                        <!-- Products will be dynamically loaded -->
+                    </div>
+                </div>
+            </section>
+
+            <section class="categories">
+                <div class="container">
+                    <h2 class="section-title">Product Categories</h2>
+                    <div class="categories-grid" id="categories-grid">
+                        <!-- Categories will be dynamically loaded -->
+                    </div>
+                </div>
+            </section>
+
+            <section class="testimonials">
+                <div class="container">
+                    <h2 class="section-title"></h2>
+                    <div class="testimonials-grid" id="testimonials-grid">
+                        <!-- Testimonials will be dynamically loaded -->
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Shop Page -->
+        <section id="shop-page" class="page">
+            <div class="container">
+                <div class="shop-header">
+                    <h1 class="page-title">Security Hardware Store</h1>
+                    <div class="shop-controls">
+                        <select class="form-control" id="sort-select">
+                            <option value="name">Sort by Name</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Highest Rated</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="shop-content">
+                    <aside class="shop-sidebar">
+                        <div class="filter-section">
+                            <h3>Categories</h3>
+                            <div class="filter-group" id="category-filters">
+                                <!-- Category filters will be dynamically loaded -->
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <h3>Price Range</h3>
+                            <div class="price-range">
+                                <input type="number" class="form-control" placeholder="Min" id="price-min">
+                                <input type="number" class="form-control" placeholder="Max" id="price-max">
+                                <button class="btn btn--primary btn--sm" id="apply-price-filter">Apply</button>
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <h3></h3>
+
+                        </div>
+                    </aside>
+
+                    <div class="shop-main">
+                        <div class="products-grid" id="shop-products-grid">
+                            <!-- Products will be dynamically loaded -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Detail Page -->
+        <section id="product-detail-page" class="page">
+            <div class="container">
+                <nav class="breadcrumb">
+                    <a href="#home" data-page="home">Home</a> >
+                    <a href="#shop" data-page="shop">Shop</a> >
+                    <span id="product-breadcrumb">Product</span>
+                </nav>
+
+                <div class="product-detail" id="product-detail-content">
+                    <!-- Product details will be dynamically loaded -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart Page -->
+        <section id="cart-page" class="page">
+            <div class="container">
+                <h1 class="page-title">Shopping Cart</h1>
+                <div class="cart-content" id="cart-content">
+                    <!-- Cart items will be dynamically loaded -->
+                </div>
+            </div>
+        </section>
+        <div id="orders-page" class="page">
+            <div class="container">
+                <h1 class="page-title">Your Orders</h1>
+                <div id="orders-list"></div>
+            </div>
+        </div>
+
+        <!-- Checkout Page -->
+        <section id="checkout-page" class="page">
+            <div class="container">
+                <h1 class="page-title">Checkout</h1>
+                <div class="checkout-content">
+                    <form class="checkout-form" id="checkout-form">
+                        <div class="checkout-section">
+                            <h2>Billing Information</h2>
+                            <div class="form-group">
+                                <label class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Address *</label>
+                                <textarea class="form-control" rows="3" required></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">City *</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Postal Code *</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checkout-section">
+                            <h2>💰 Payment Method - Cash on Delivery Only</h2>
+                            <div class="payment-option" style="background: #2a2a2a; border: 2px solid #ff0000; border-radius: 8px; padding: 20px;">
+                                <input type="radio" id="cod" name="payment" value="cod" checked disabled>
+                                <label for="cod" style="color: #ff0000; font-weight: bold; font-size: 18px;">Cash on Delivery (COD) ✅</label>
+                                <div style="margin-top: 15px; color: #ffffff;">
+                                    <p class="payment-description" style="margin-bottom: 10px;">💵 Pay with cash when your order is delivered to your doorstep.</p>
+                                    <div style="background: #1a4a1a; border: 1px solid #00ff00; padding: 12px; border-radius: 6px;">
+                                        <div style="color: #00ff00; font-weight: bold; margin-bottom: 5px;">Why Cash on Delivery?</div>
+                                        <ul style="color: #cccccc; margin: 0; padding-left: 20px; font-size: 14px;">
+                                            <li>100% secure - no online payment required</li>
+                                            <li>Inspect the product before payment</li>
+                                            <li>No risk of online fraud</li>
+                                            <li>Convenient and trusted method</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-summary">
+                            <h3>Order Summary</h3>
+                            <div id="checkout-summary">
+                                <!-- Order summary will be dynamically loaded -->
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn--primary btn--lg btn--full-width">💰 Place Order - Cash on Delivery</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Page -->
+        <section id="about-page" class="page">
+            <div class="container">
+                <h1 class="page-title">About TechieCyber404</h1>
+                <div class="about-content">
+                    <div class="about-section">
+                        <h2>Our Mission</h2>
+                        <p>TechieCyber404 Hardware Store is dedicated to providing cybersecurity professionals, ethical hackers, and security researchers with the highest quality penetration testing tools and security hardware. We believe in empowering the
+                            cybersecurity community with cutting-edge technology to protect digital infrastructure worldwide.</p>
+                    </div>
+
+                    <div class="about-section">
+                        <h2>Why Choose TechieCyber404?</h2>
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <h3>🛡️ Professional Grade</h3>
+                                <p>All our products are sourced directly from manufacturers and meet professional cybersecurity standards.</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>🚚 Fast Delivery</h3>
+                                <p>Quick processing and reliable shipping to get your security tools when you need them.</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>🔧 Technical Support</h3>
+                                <p>Expert technical support from cybersecurity professionals who understand your needs.</p>
+                            </div>
+                            <div class="feature-card">
+                                <h3>🔒 Secure Shopping</h3>
+                                <p>Your privacy and security are our top priority with encrypted transactions and secure data handling.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="about-section">
+                        <h2>Security Certifications</h2>
+                        <div class="certifications">
+                            <div class="cert-badge">ISO 27001 Certified</div>
+                            <div class="cert-badge">SOC 2 Compliant</div>
+                            <div class="cert-badge">PCI DSS Level 1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Support Page -->
+        <section id="support-page" class="page">
+            <div class="container">
+                <h1 class="page-title">Support & Contact</h1>
+                <div class="support-content">
+                    <div class="support-section">
+                        <h2>Contact Us</h2>
+                        <form class="contact-form" id="contact-form">
+                            <div class="form-group">
+                                <label class="form-label">Name *</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email *</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Subject *</label>
+                                <select class="form-control" required>
+                                    <option value="">Select a topic...</option>
+                                    <option value="order">Order Inquiry</option>
+                                    <option value="technical">Technical Support</option>
+                                    <option value="product">Product Question</option>
+                                    <option value="general">General Inquiry</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Message *</label>
+                                <textarea class="form-control" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn--primary">Send Message</button>
+                        </form>
+                    </div>
+
+                    <div class="support-section">
+                        <h2>Technical Support</h2>
+                        <div class="support-info">
+                            <div class="support-item">
+                                <h3>📞 Phone Support</h3>
+                                <p>+1-800-CYBER-404<br>Mon-Fri: 9AM-6PM PST</p>
+                            </div>
+                            <div class="support-item">
+                                <h3>📧 Email Support</h3>
+                                <p>support@techiecyber404.com<br>Response within 24 hours</p>
+                            </div>
+                            <div class="support-item">
+                                <h3>💬 Live Chat</h3>
+                                <p>Available 24/7 for urgent technical issues</p>
+                                <button class="btn btn--secondary" id="live-chat-btn">Start Chat</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="support-section">
+                        <h2>Frequently Asked Questions</h2>
+                        <div class="faq-list">
+                            <div class="faq-item">
+                                <h3>What is the ESP8266 used for?</h3>
+                                <p>The ESP8266 is a powerful Wi-Fi microcontroller used for IoT projects, penetration testing, and educational purposes. It can be programmed for keystroke injection, payload delivery, and security testing scenarios.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>Is the ESP8266 legal to use?</h3>
+                                <p>Yes, the ESP8266 is completely legal. However, it should only be used for authorized security testing, educational purposes, or on systems you own. Unauthorized use may violate local laws.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>What payment methods do you accept?</h3>
+                                <p>We currently accept Cash on Delivery (COD) only to ensure maximum security for our customers. Payment is made when your order is delivered.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>How long does shipping take?</h3>
+                                <p>Domestic orders typically arrive within 3-5 business days. International shipping takes 7-14 business days depending on location and customs processing.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>Do you provide technical support?</h3>
+                                <p>Yes! We provide comprehensive technical support including setup guides, programming tutorials, and troubleshooting assistance for all our products.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>Do you ship internationally?</h3>
+                                <p>Yes, we ship worldwide. Shipping costs and delivery times vary by location. International orders may be subject to customs duties and taxes.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>Are your products authentic?</h3>
+                                <p>Absolutely. All products are sourced directly from manufacturers and come with authenticity guarantees and quality certifications.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>What is your return policy?</h3>
+                                <p>We offer a 30-day return policy for unopened items in original packaging.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Order Confirmation Modal -->
+        <div class="order-confirmation-modal hidden" id="order-confirmation-modal">
+            <div class="order-confirmation-content">
+                <h2>Thank You for Your Order!</h2>
+                <p>Your order has been placed successfully.</p>
+                <p><strong>Order ID:</strong> <span id="order-id"></span></p>
+                <button class="btn btn--primary" id="continue-shopping">Continue Shopping</button>
+                <button class="btn btn--secondary" id="close-confirmation-modal">Close</button>
+            </div>
+        </div>
+
+        <!-- Cart Sidebar -->
+        <div class="cart-sidebar" id="cart-sidebar">
+            <div class="cart-header">
+                <h3>Shopping Cart</h3>
+                <button class="cart-close" id="cart-close">×</button>
+            </div>
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be dynamically loaded -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <strong>Total: ₹<span id="cart-total">0</span></strong>
+                </div>
+                <button class="btn btn--primary btn--full-width" id="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </div>
+
+        <!-- Checkout Form Modal -->
+        <div class="checkout-form-modal" id="checkout-form-modal" style="display:none;">
+            <div class="checkout-form-content">
+                <form id="order-form">
+                    <h3>🔒 Secure Order Details</h3>
+
+                    <!-- Security Notice -->
+                    <div style="background: #1a4a1a; border: 1px solid #00ff00; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-size: 14px;">
+                        <div style="color: #00ff00; font-weight: bold; margin-bottom: 5px;">🔐 Secure Transaction</div>
+                        <div style="color: #cccccc;">Your information is encrypted and secure. We never store payment details.</div>
+                    </div>
+
+                    <label>
+                Name:<br>
+        <input type="text" name="name" required>
+            </label>
+                    <label>
+                Phone Number:<br>
+        <input type="tel" name="phone" required pattern="[0-9]{10}">
+            </label>
+                    <label>
+                City:<br>
+        <input type="text" name="city" required>
+            </label>
+                    <label>
+                Address:<br>
+        <input type="text" name="address" required>
+            </label>
+                    <label>
+                Pin Code:<br>
+        <input type="text" name="pincode" required pattern="[0-9]{6}" placeholder="Enter 6-digit pin code">
+            </label>
+                    <label>
+                Email:<br>
+        <input type="email" name="email" required>
+            </label>
+
+                    <!-- Payment Information -->
+                    <div style="background: #2a2a2a; border: 1px solid #ff0000; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                        <div style="color: #ff0000; font-weight: bold; margin-bottom: 10px; display: flex; align-items: center;">
+                            💰 <span style="margin-left: 8px;">Payment Method: Cash on Delivery (COD)</span>
+                        </div>
+                        <div style="color: #cccccc; font-size: 14px;">
+                            ✅ Pay with cash when your order is delivered<br> ✅ No online payment required<br> ✅ Inspect the product before payment<br> ✅ Secure and trusted delivery method
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary">Submit Order (Cash on Delivery)</button>
+                    <button type="button" id="close-checkout-form" class="btn btn--secondary">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <!-- Trust Badges -->
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <span class="trust-badge-icon">🔒</span>
+                    <span>SSL Secured</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="trust-badge-icon">🛡️</span>
+                    <span>Safe Payment</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="trust-badge-icon">📦</span>
+                    <span>Fast Shipping</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="trust-badge-icon">🔄</span>
+                    <span>Easy Returns</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="trust-badge-icon">✅</span>
+                    <span>Authentic Products</span>
+                </div>
+            </div>
+
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>TechieCyber404</h3>
+                    <p>Professional cybersecurity hardware for security professionals and ethical hackers worldwide.</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank">Twitter</a>
+                        <a href="#" target="_blank">LinkedIn</a>
+                        <a href="#" target="_blank">GitHub</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home" data-page="home">Home</a></li>
+                        <li><a href="#shop" data-page="shop">Shop</a></li>
+                        <li><a href="#about" data-page="about">About Us</a></li>
+                        <li><a href="#support" data-page="support">Support</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li>Phone: +1-800-CYBER-404</li>
+                        <li>Email: support@techiecyber404.com</li>
+                        <li>Hours: Mon-Fri 9AM-6PM PST</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Security & Privacy</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Security Policy</a></li>
+                        <li>🔒 SSL Secured</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 TechieCyber404 Hardware Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
