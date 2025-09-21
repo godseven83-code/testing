@@ -1232,11 +1232,36 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   document.getElementById('checkout-btn').addEventListener('click', function() {
-  document.getElementById('checkout-form-modal').style.display = 'flex';
+  const modal = document.getElementById('checkout-form-modal');
+  modal.style.display = 'flex';
+  
+  // Mobile specific handling
+  if (window.innerWidth <= 768) {
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+    
+    // Ensure modal is at top of viewport
+    setTimeout(() => {
+      modal.scrollTop = 0;
+    }, 100);
+    
+    // Add mobile-specific class for better styling
+    modal.classList.add('mobile-checkout');
+  }
 });
 
 document.getElementById('close-checkout-form').addEventListener('click', function() {
-  document.getElementById('checkout-form-modal').style.display = 'none';
+  const modal = document.getElementById('checkout-form-modal');
+  modal.style.display = 'none';
+  
+  // Mobile specific cleanup
+  if (window.innerWidth <= 768) {
+    // Restore body scroll
+    document.body.style.overflow = '';
+    
+    // Remove mobile-specific class
+    modal.classList.remove('mobile-checkout');
+  }
 });
 
 // Form validation functions
@@ -1407,7 +1432,14 @@ document.getElementById('order-form').addEventListener('submit', function(e) {
     showNotification("Email service not available. Order saved but no confirmation email sent.", 'warning');
     
     // Still process the order locally
-    document.getElementById('checkout-form-modal').style.display = 'none';
+    const modal = document.getElementById('checkout-form-modal');
+    modal.style.display = 'none';
+    
+    // Mobile specific cleanup
+    if (window.innerWidth <= 768) {
+      document.body.style.overflow = '';
+      modal.classList.remove('mobile-checkout');
+    }
     document.getElementById('order-id').textContent = orderId;
     document.getElementById('order-confirmation-modal').classList.remove('hidden');
     state.cart = [];
@@ -1425,7 +1457,14 @@ document.getElementById('order-form').addEventListener('submit', function(e) {
       showNotification("Order placed successfully! Confirmation sent to your email.", 'success');
       
       // Hide the checkout form modal
-      document.getElementById('checkout-form-modal').style.display = 'none';
+      const modal = document.getElementById('checkout-form-modal');
+      modal.style.display = 'none';
+      
+      // Mobile specific cleanup
+      if (window.innerWidth <= 768) {
+        document.body.style.overflow = '';
+        modal.classList.remove('mobile-checkout');
+      }
 
       // Show the confirmation modal with order ID
       document.getElementById('order-id').textContent = orderId;
@@ -1444,7 +1483,14 @@ document.getElementById('order-form').addEventListener('submit', function(e) {
       showNotification("Failed to send order confirmation email. Order saved but please contact support.", 'error');
       
       // Still show confirmation even if email fails
-      document.getElementById('checkout-form-modal').style.display = 'none';
+      const modal = document.getElementById('checkout-form-modal');
+      modal.style.display = 'none';
+      
+      // Mobile specific cleanup
+      if (window.innerWidth <= 768) {
+        document.body.style.overflow = '';
+        modal.classList.remove('mobile-checkout');
+      }
       document.getElementById('order-id').textContent = orderId;
       document.getElementById('order-confirmation-modal').classList.remove('hidden');
       
